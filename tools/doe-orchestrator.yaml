@@ -1,0 +1,19 @@
+name: "doe-orchestrator"
+description: "Drives the DOE pipeline (Data-fining agent, Opinion-injector agent, Expresser agent) for analytical synthesis."
+input_schema:
+  type: object
+  properties:
+    dataset_source:
+      type: string
+      description: "Identifier or path to raw quantitative dataset."
+    analysis_topic:
+      type: string
+      description: "Core financial or analytical topic to address."
+    opinion_sources:
+      type: array
+      items:
+        type: string
+      description: "List of expert opinion bases or regulatory guidelines to incorporate."
+  required:
+    - dataset_source
+    - analysis_topic

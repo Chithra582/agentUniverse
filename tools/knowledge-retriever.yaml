@@ -1,0 +1,22 @@
+name: "knowledge-retriever"
+description: "Queries domain knowledge bases and semantic vector indices with hybrid relevance filtering."
+input_schema:
+  type: object
+  properties:
+    query:
+      type: string
+      description: "Search query text."
+    knowledge_base:
+      type: string
+      description: "Name of target knowledge collection or vector index."
+    top_k:
+      type: integer
+      description: "Number of top knowledge passages to retrieve."
+      default: 5
+    score_threshold:
+      type: number
+      description: "Minimum semantic similarity threshold."
+      default: 0.65
+  required:
+    - query
+    - knowledge_base

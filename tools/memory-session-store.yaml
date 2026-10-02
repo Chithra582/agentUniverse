@@ -1,0 +1,22 @@
+name: "memory-session-store"
+description: "Records multi-turn agent interactions, state checkpoints, and shared blackboard context."
+input_schema:
+  type: object
+  properties:
+    session_id:
+      type: string
+      description: "Unique session identifier."
+    action:
+      type: string
+      enum:
+        - "get_state"
+        - "update_state"
+        - "checkpoint"
+        - "clear"
+      description: "Blackboard memory action."
+    state_data:
+      type: object
+      description: "State payload or blackboard data to update."
+  required:
+    - session_id
+    - action

@@ -1,0 +1,17 @@
+name: "peer-orchestrator"
+description: "Coordinates PEER agent instances (Planner, Executor, Expresser, Reviewer) and manages feedback loops."
+input_schema:
+  type: object
+  properties:
+    task_goal:
+      type: string
+      description: "User inquiry or problem statement to be solved."
+    max_review_loops:
+      type: integer
+      description: "Maximum permitted review-refinement feedback cycles."
+      default: 3
+    pattern_config:
+      type: object
+      description: "Custom configuration for Planner, Executor, Expresser, and Reviewer agents."
+  required:
+    - task_goal

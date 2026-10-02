@@ -1,0 +1,22 @@
+spec_version: "0.1.0"
+name: "agent-universe"
+version: "0.0.19"
+description: "Enterprise multi-agent framework based on LLMs featuring collaborative pattern components (PEER, DOE) and domain expertise integration."
+author: "AntGroup & agentUniverse Contributors"
+license: "Apache-2.0"
+metadata:
+  domain: "Developer Tools / Multi-Agent Collaboration Patterns & Financial Domain Agents"
+  category: "Developer Tools"
+  framework: "agentUniverse Python Core / LangChain / ChromaDB"
+  language: "Python"
+skills:
+  - "peer-collaborative-pattern"
+  - "doe-collaborative-pattern"
+  - "domain-knowledge-rag"
+  - "agent-memory-lifecycle"
+tools:
+  - "peer-orchestrator"
+  - "doe-orchestrator"
+  - "knowledge-retriever"
+  - "tool-caller"
+  - "memory-session-store"

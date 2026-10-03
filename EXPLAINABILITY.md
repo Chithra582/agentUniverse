@@ -5,7 +5,7 @@ This document explains the internal mechanisms, data lineage, operational bounda
 > **Agent Name:** agentUniverse (`agent-universe`)  
 > **Specification:** OpenGAP v0.1.0  
 > **Category / Domain:** Developer Tools / Multi-Agent Collaboration Patterns & Financial Domain Agents  
-> **Compliance Standard:** OpenGAP Checkpoint 2 (Explainability & Decision Governance), SOC 2, ISO 27001  
+> **Compliance Standard:** OpenGAP Checkpoint 2 (Explainability & Decision Governance), OWASP LLM Top 10, MITRE ATLAS  
 
 ---
 
@@ -49,7 +49,7 @@ The runtime inquiry intake, task decomposition, agent dispatch, and peer evaluat
 [ Verified Multi-Agent Synthesis Delivered ]
 ```
 
-### 2. Scoring Methodology & Rubric Formulations
+### 2. Decision Logic & Routing Formulations
 
 During the Review stage of the PEER pattern, the Reviewer agent calculates two objective, mathematically rigorous evaluation formulations:
 
@@ -73,28 +73,24 @@ During the Review stage of the PEER pattern, the Reviewer agent calculates two o
 
 ### 3. Thresholding & Refusal Decision Criteria
 
-agentUniverse enforces deterministic refusal boundaries across its execution patterns:
-
-| Trigger Scenario | Operational Action | Error Code |
-| :--- | :--- | :--- |
-| Quality score fails threshold ($S_{\text{eval}} < 0.80$) and $k \ge 3$ loops | Terminate loop; return best-effort draft with prominent confidence warnings | `ERR_MAX_LOOPS_EXCEEDED` |
-| Numerical discrepancy detected between source data tables and narrative | Halt expresser synthesis; require data recalculation | `ERR_NUMERICAL_DISCREPANCY` |
-| Domain knowledge retrieval returns relevance score below minimum cutoff ($< 0.60$) | Flag missing domain reference; solicit supplementary context from user | `ERR_DOMAIN_KNOWLEDGE_MISSING` |
-| Attempted execution of unapproved external API or unverified tool | Reject tool invocation; log unauthorized dispatch attempt | `ERR_UNAUTHORIZED_TOOL_DISPATCH` |
-| LLM vendor endpoint latency exceeds threshold (> 45s) | Switch to secondary configured model backend | `ERR_LLM_GATEWAY_TIMEOUT` |
-| Confidence index below minimum tolerance ($I_{\text{confidence}} < 0.75$) | Require human supervisor review before dispatching answer | `ERR_LOW_CONFIDENCE_THRESHOLD` |
+agentUniverse deterministically refuses requests that violate financial safety or execution boundaries:
+- **Refusal on Max Loop Exhaustion**: Workflows failing quality cutoff ($S_{\text{eval}} < 0.80$) after 3 review cycles terminate with code `ERR_MAX_LOOPS_EXCEEDED`.
+- **Refusal on Numerical Discrepancy**: Synthesized narratives with numbers contradictory to source financial tables halt with code `ERR_NUMERICAL_DISCREPANCY`.
+- **Refusal on Sub-Threshold Passage Relevance**: Knowledge queries returning relevance scores below cutoff ($< 0.60$) are rejected with code `ERR_DOMAIN_KNOWLEDGE_MISSING`.
+- **Refusal on Unauthorized Tool Dispatch**: Invocations of unregistered or external APIs outside whitelist permissions are blocked with code `ERR_UNAUTHORIZED_TOOL_DISPATCH`.
+- **Refusal on Gateway Latency Timeout**: Upstream model calls exceeding the 45-second budget trigger refuse/failover with code `ERR_LLM_GATEWAY_TIMEOUT`.
 
 ### 4. Fallback Decision Mechanism
 
-The framework implements a deterministic multi-tier fallback architecture:
-
-- **Tier 1 — Multi-Model Provider Failover**: If primary foundation models (e.g., DeepSeek-R1, Qwen-2.5) hit rate limits or downtime, queries fail over dynamically to secondary configured LLMs (e.g., OpenAI, Claude) with identical temperature settings.
-- **Tier 2 — Review Loop Graceful Degradation**: When review cycles hit the maximum ceiling ($k = 3$) without reaching target score, the framework packages reviewer critique annotations alongside the output rather than failing silently.
-- **Tier 3 — Hybrid Search Fallback**: If vector databases (ChromaDB/Milvus) encounter connection timeouts, knowledge retrieval degrades to local BM25 keyword matching over cached document summaries.
-- **Model Cascade**: Fallback from multi-agent deep reasoning patterns to simplified single-agent direct response modes when compute latency budgets are constrained.
+agentUniverse maintains operational resilience through layered fallback mechanisms:
+- **Multi-Model Provider Fallback**: If primary foundation models (DeepSeek-R1 / Qwen-2.5) experience rate limits or outages, prompts dynamically fail over to secondary configured endpoints (OpenAI / Claude).
+- **Review Loop Graceful Degradation**: When review cycles hit the maximum ceiling without reaching target score, the agent delivers the draft annotated with reviewer diagnostics rather than failing silently.
+- **Local Lexical Search Fallback**: If vector databases (ChromaDB / Milvus) encounter network timeouts, retrieval degrades to local BM25 keyword matching over cached documents.
+- **Model Fallback Cascade**: High-level multi-agent synthesis tasks default to `gemini-2.0-flash` with automatic failover to `gpt-4o` and `claude-3-5-sonnet`.
 
 ### 5. Human-in-the-Loop Governance
 
+Human operators retain sovereign authority over the multi-agent execution lifecycle:
 - **High-Stakes Decision Sign-Off**: Financial filings, portfolio recommendations, and public announcements require explicit human confirmation before external delivery.
 - **Pattern Configuration Auditing**: Modifying agent prompts, temperature settings, and tool whitelists in production requires administrator privileges.
 - **Visual Trace Inspection**: Business analysts can review multi-agent conversation logs, planning DAGs, and evaluation scores using the agentUniverse visual platform.
@@ -160,10 +156,10 @@ The framework implements a deterministic multi-tier fallback architecture:
 | :--- | :--- | :---: |
 | **How the agent decides** | [How the Agent Decides](#how-the-agent-decides) | **Covered** |
 | - Decision architecture & 5-stage pipeline | Section 1 | Verified |
-| - Scoring methodology & rubric formulations ($S_{\text{eval}}$, $I_{\text{confidence}}$) | Section 2 | Verified |
-| - Thresholding, refusal decision criteria & error codes | Section 3 | Verified |
-| - Fallback decision mechanism & multi-tier fallbacks | Section 4 | Verified |
-| - Human-in-the-loop & governance | Section 5 | Verified |
+| - Decision logic & routing formulations | Section 2 | Verified |
+| - Thresholding & refusal decision criteria | Section 3 | Verified |
+| - Fallback decision mechanism | Section 4 | Verified |
+| - Human-in-the-loop governance & oversight | Section 5 | Verified |
 | **The data it uses** | [The Data It Uses](#the-data-it-uses) | **Covered** |
 | - Ingested analytical inquiries & financial tables | Section 1 | Verified |
 | - Configuration & reference ontologies | Section 2 | Verified |

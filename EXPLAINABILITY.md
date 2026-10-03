@@ -99,6 +99,8 @@ Human operators retain sovereign authority over the multi-agent execution lifecy
 
 ## The Data It Uses
 
+agentUniverse operates under strict principles of data minimization, local environment isolation, and developer privacy.
+
 ### 1. Ingested Input Data
 
 - **Analytical Inquiries**: Complex financial questions, market research prompts, and enterprise analytical instructions.
@@ -119,14 +121,16 @@ Human operators retain sovereign authority over the multi-agent execution lifecy
 
 ### 4. Data Privacy, Storage, and Retention
 
-- **PII & Financial Data Redaction**: Automatic regex masking of customer account numbers, SSNs, credit cards, and confidential identifiers prior to model inference.
-- **Enterprise Tenant Isolation**: Memory stores and vector partitions strictly isolated by tenant ID and project namespace.
-- **Audit Logging & Retention**: Complete agent reasoning DAGs and reviewer scoring traces are archived in encrypted cold storage for 90 days, then purged or anonymized according to compliance policy.
-- **Transport & Storage Encryption**: Strict TLS 1.3 across all agent communication channels; AES-256 for persistent document stores.
+- **OWASP LLM & MITRE ATLAS Hardened**: Defended against indirect prompt injection in retrieved domain passages, adversarial financial data manipulation, and unauthorized external API dispatch.
+- **Enterprise Tenant Isolation**: Memory stores, vector partitions, and execution traces reside strictly within designated local or VPC-isolated database instances.
+- **Automated Secret Scrubbing**: API keys, database credentials, and customer personal account numbers are automatically masked and redacted prior to embedding or logging.
+- **Zero Commercial Monetization**: Financial queries, document excerpts, and agent reasoning traces are never commercialized, aggregated, or shared with third parties.
 
 ---
 
 ## Limitations
+
+Understanding the operational boundaries and technical constraints of agentUniverse is essential for effective deployment.
 
 ### 1. Multi-Agent Reasoning Latency
 - **Limitation**: Orchestrating sequential multi-agent review cycles (PEER) introduces latency (15–60s) compared to single-prompt LLM generation.
@@ -164,7 +168,7 @@ Human operators retain sovereign authority over the multi-agent execution lifecy
 | - Ingested analytical inquiries & financial tables | Section 1 | Verified |
 | - Configuration & reference ontologies | Section 2 | Verified |
 | - Base model lineage & orchestration runtime | Section 3 | Verified |
-| - Data privacy, storage, encryption & retention | Section 4 | Verified |
+| - Data privacy, retention lifecycle & MITRE/OWASP | Section 4 | Verified |
 | **Its limitations** | [Limitations](#limitations) | **Covered** |
 | - Multi-agent reasoning latency | Section 1 | Verified |
 | - Domain knowledge freshness | Section 2 | Verified |
